@@ -43,6 +43,7 @@ def converter_to_mp3(file_path="", language="en", play_sound=False):
             read_text = txt.read()
         text = "".join(read_text)
         file_name = Path(file_path).stem
+        create_folder("mp3")
         tts = gTTS(text=text, lang=language)
         tts.save(f"mp3\{file_name}.mp3")
         if play_sound:
