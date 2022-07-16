@@ -7,6 +7,7 @@ from gtts import gTTS
 from playsound import playsound
 from loguru import logger
 import textract
+from striprtf.striprtf import rtf_to_text
 
 
 def create_folder(folder):
@@ -65,16 +66,29 @@ def converter_to_mp3(file_path="", language="en", play_sound=False):
             playsound(f"mp3\{file_name}.mp3")
         logger.info(f"{file_name}.mp3 created.")
         return f"{file_name}.mp3 created successfully."
+    elif is_file and (suffix_file == ".rtf"):
+        with open(file_path, 'r') as infile:
+            content = infile.read()
+            text = rtf_to_text(content)
+        file_name = Path(file_path).stem
+        logger.info(f"Read {file_name} created.")
 
+        create_folder("mp3")
+        tts = gTTS(text=text, lang=language)
+        tts.save(f"mp3\{file_name}.mp3")
+        if play_sound:
+            playsound(f"mp3\{file_name}.mp3")
+        logger.info(f"{file_name}.mp3 created.")
+        return f"{file_name}.mp3 created successfully."
     else:
         logger.warning("File not convert. Need to pate correct extention file.")
-        return "File not pdf, txt."
+        return "Сonverter does not support this format "
 
 
 if __name__ == "__main__":
     tprint("PDF->MP3", font="bulbhead")
     converter_to_mp3(
-        file_path=r"Input path to file",
-        language="ru",
+        file_path=r"Input file path.",
+        language="en",
         play_sound=False,
     )
