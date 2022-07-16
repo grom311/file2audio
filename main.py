@@ -35,7 +35,11 @@ def converter_to_mp3(file_path="", language="en", play_sound=False):
         my_mp3 = gTTS(text=text, lang=language, slow=False)
         file_name = Path(file_path).stem
         create_folder("mp3")
-        my_mp3.save(f"mp3\{file_name}.mp3")
+        logger.info('gtts converted.')
+        try:
+            my_mp3.save(f"mp3\{file_name}.mp3")
+        except Exception as exc:
+            logger.error(f"Error for {exc}")
         logger.info(f"{file_name}.mp3 created.")
         if play_sound:
             playsound(f"mp3\{file_name}.mp3")
@@ -75,7 +79,10 @@ def converter_to_mp3(file_path="", language="en", play_sound=False):
 
         create_folder("mp3")
         tts = gTTS(text=text, lang=language)
-        tts.save(f"mp3\{file_name}.mp3")
+        try:
+            tts.save(f"mp3\{file_name}.mp3")
+        except Exception as exc:
+            logger.error(f"Error for {exc}")
         if play_sound:
             playsound(f"mp3\{file_name}.mp3")
         logger.info(f"{file_name}.mp3 created.")
@@ -88,7 +95,7 @@ def converter_to_mp3(file_path="", language="en", play_sound=False):
 if __name__ == "__main__":
     tprint("PDF->MP3", font="bulbhead")
     converter_to_mp3(
-        file_path=r"Input file path.",
+        file_path=r"Path to file",
         language="en",
         play_sound=False,
     )
